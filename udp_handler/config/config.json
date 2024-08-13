@@ -1,0 +1,16 @@
+{
+    "MQTT":
+    {
+        "client_id": "udp_handler",
+        "address": "tcp://localhost:1883",
+        "subscription_topics": [],
+        "publish_topic": "udp_handler/udp_message",
+        "QOS": 2,
+        "keep_alive": 60
+    }
+    "socket":
+    {
+        "address": "192.168.1.209",
+        "port": 80
+    }
+}
