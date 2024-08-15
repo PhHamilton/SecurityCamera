@@ -1,0 +1,19 @@
+{
+    "MQTT":
+    {
+        "client_id": "camera_handler",
+        "address": "tcp://localhost:1883",
+        "subscription_topics": [],
+        "publish_topic": "udp_handler/udp_message",
+        "QOS": 2,
+        "keep_alive": 60
+    },
+    "camera_settings":
+    {
+        "frame_rate": 2,
+        "image_cycle_limit": 10,
+        "vertical_flip": false,
+        "output_filename": "img_"
+
+    }
+}
