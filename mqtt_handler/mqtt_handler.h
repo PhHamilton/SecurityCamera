@@ -37,7 +37,7 @@ class MQTT_HANDLER
         bool Initialize();
         bool Start();
         bool Stop();
-        bool PublishMessage(std::string message);
+        bool PublishMessage(std::string topic, std::string message);
         ~MQTT_HANDLER();
     protected:
         virtual void _MQTTThread() = 0;

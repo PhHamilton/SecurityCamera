@@ -59,12 +59,12 @@ bool MQTT_HANDLER::Start()
     return true;
 }
 
-bool MQTT_HANDLER::PublishMessage(std::string message)
+bool MQTT_HANDLER::PublishMessage(std::string topic, std::string message)
 {
     try
     {
         auto msg = mqtt::make_message(
-                                        _mqttConfig.GetPublishTopic(),
+                                         topic,
                                          message
                                      );
         msg->set_qos(_mqttConfig.GetQOS());
