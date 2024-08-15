@@ -3,13 +3,17 @@
 #include <thread>
 #include <unistd.h>
 #include <cstring>
+#include "rapidjson/rapidjson.h"
+#include "rapidjson/document.h"
+#include "rapidjson/error/en.h"
 
-SOCKET_HANDLER::SOCKET_HANDLER(const std::string filename) : _socketConfig(filename)
+SOCKET_HANDLER::SOCKET_HANDLER(const std::string filename) : _socketConfig(filename), _mqttHandler(filename)
 {
 }
 
 SOCKET_HANDLER::~SOCKET_HANDLER()
 {
+    _mqttHandler.Stop();
     _close();
 }
 bool SOCKET_HANDLER::Initialize()
@@ -23,10 +27,10 @@ bool SOCKET_HANDLER::Initialize()
     std::cout << "Socket created" << std::endl;
 
     _serv_addr.sin_family = AF_INET;
-    _serv_addr.sin_port = htons(8080);
+    _serv_addr.sin_port = htons(_socketConfig.GetServerPort());
 
     // Convert IPv4 and IPv6 addresses from text to binary form
-    if(inet_pton(AF_INET, "192.168.1.209", &_serv_addr.sin_addr) <= 0) {
+    if(inet_pton(AF_INET, _socketConfig.GetServerAddress().c_str(), &_serv_addr.sin_addr) <= 0) {
         std::cerr << "Invalid address/ Address not supported\n";
         return false;
     }
@@ -38,6 +42,9 @@ bool SOCKET_HANDLER::Initialize()
     }
 
     std::cout << "Connection successful" << std::endl;
+
+    _mqttHandler.Initialize();
+    _mqttHandler.Start();
 
     return true;
 }
@@ -62,12 +69,27 @@ void SOCKET_HANDLER::SendData(const char* message)
 void SOCKET_HANDLER::_socketThread()
 {
     std::cerr << "Socket MQTT thread.. \n";
+    rapidjson::Document document;
 
     while(_isRunning)
     {
-        if(read(_sock, _msg, BUFFER_SIZE) > 0)
+        if(recv(_sock, _msg, sizeof(_msg) -1, 0) > 0)
         {
-            std::cerr << "Message from server: " << _msg << std::endl;
+            std::cout << "Message from server: " << _msg << std::endl;
+            if(document.Parse(_msg).HasParseError())
+            {
+                std::cerr << "Error: " << rapidjson::GetParseError_En(document.GetParseError())
+                                       << " (" << document.GetErrorOffset()
+                                       << ")" << std::endl;
+            }
+            else
+            {
+                if(document.HasMember("angle") && document["angle"].IsInt())
+                {
+                    std::cout << "angle: " << document["angle"].GetInt() << std::endl;
+                    _mqttHandler.PublishMessage("servo/angle", std::to_string(document["angle"].GetInt()));
+                }
+            }
         }
         std::this_thread::sleep_for(std::chrono::seconds(1));
     }
