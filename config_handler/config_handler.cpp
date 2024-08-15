@@ -90,4 +90,81 @@ CONFIG_HANDLER::CONFIG_HANDLER(const std::string filename)
         }
 
     }
+    if(doc.HasParseError())
+    {
+        std::cerr << "Error parsing JSON file." << std::endl;
+        return;
+    }
+
+    if(doc.HasMember("socket") && doc["socket"].IsObject())
+    {
+        const rapidjson::Value& socket  = doc["socket"];
+
+        if(socket.HasMember("server_address") && socket["server_address"].IsString())
+        {
+            _serverAddress = socket["server_address"].GetString();
+        }
+        else
+        {
+            std::cerr << "\"server_address\" is missing or is not a string!" << std::endl;
+        }
+
+        if(socket.HasMember("server_port") && socket["server_port"].IsInt())
+        {
+            _serverPort = socket["server_port"].GetInt();
+        }
+        else
+        {
+            std::cerr << "\"server_port\" is missing or is not an int!" << std::endl;
+        }
+    }
+    if(doc.HasMember("camera_settings") && doc["camera_settings"].IsObject())
+    {
+        const rapidjson::Value& camera  = doc["camera_settings"];
+
+        if(camera.HasMember("frame_rate") && camera["frame_rate"].IsInt())
+        {
+            _frameRate = camera["frame_rate"].GetInt();
+        }
+        else
+        {
+            std::cerr << "\"frame_rate\" is missing or is not an int!" << std::endl;
+        }
+
+        if(camera.HasMember("image_cycle_limit") && camera["image_cycle_limit"].IsInt())
+        {
+            _imageCycleLimit = camera["image_cycle_limit"].GetInt();
+        }
+        else
+        {
+            std::cerr << "\"image_cycle_limit\" is missing or is not an int!" << std::endl;
+        }
+
+        if(camera.HasMember("image_cycle_limit") && camera["image_cycle_limit"].IsInt())
+        {
+            _imageCycleLimit = camera["image_cycle_limit"].GetInt();
+        }
+        else
+        {
+            std::cerr << "\"image_cycle_limit\" is missing or is not an int!" << std::endl;
+        }
+
+        if(camera.HasMember("vertical_flip") && camera["vertical_flip"].IsBool())
+        {
+            _verticalFlip = camera["vertical_flip"].GetBool();
+        }
+        else
+        {
+            std::cerr << "\"image_cycle_limit\" is missing or is not an int!" << std::endl;
+        }
+
+        if(camera.HasMember("outputfilename") && camera["outputfilename"].IsString())
+        {
+            _outputFilename = camera["outputfilename"].GetString();
+        }
+        else
+        {
+            std::cerr << "\"outputfilename\" is missing or is not a string!" << std::endl;
+        }
+      }
 }
