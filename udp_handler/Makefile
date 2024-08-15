@@ -1,7 +1,7 @@
 # Compiler and flags
 CXX = g++
 CXXFLAGS = -std=c++11 -Wall -Wextra -MMD -MP
-LDFLAGS =  -lpaho-mqttpp3 -lpaho-mqtt3as
+LDFLAGS = -lpaho-mqttpp3 -lpaho-mqtt3as
 
 # Directories
 SRC_DIR = ..
@@ -20,7 +20,7 @@ SRCS = main.cpp \
        $(CONFIG_SRC_DIR)/config_handler.cpp
 
 # Object files (place them in the obj directory)
-OBJS = $(SRCS:%.cpp=$(OBJ_DIR)/%.o)
+OBJS = $(addprefix $(OBJ_DIR)/, $(SRCS:%.cpp=%.o))
 
 # Dependency files
 DEPS = $(OBJS:.o=.d)
@@ -37,6 +37,14 @@ $(TARGET): $(OBJS)
 
 # Generic rule to compile all source files into object files
 $(OBJ_DIR)/%.o: %.cpp
+	@mkdir -p $(dir $@)
+	$(CXX) $(CXXFLAGS) $(INCLUDES) -c $< -o $@
+
+$(OBJ_DIR)/%.o: $(MQTT_SRC_DIR)/%.cpp
+	@mkdir -p $(dir $@)
+	$(CXX) $(CXXFLAGS) $(INCLUDES) -c $< -o $@
+
+$(OBJ_DIR)/%.o: $(CONFIG_SRC_DIR)/%.cpp
 	@mkdir -p $(dir $@)
 	$(CXX) $(CXXFLAGS) $(INCLUDES) -c $< -o $@
 
