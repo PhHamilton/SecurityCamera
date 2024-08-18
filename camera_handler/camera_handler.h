@@ -10,6 +10,37 @@ typedef enum
     SURVEILLENCE
 }SURVEILLENCE_MODES;
 
+class CustomMQTTHandler : public MQTT_HANDLER
+{
+    public:
+        CustomMQTTHandler(const std::string& configFilename) : MQTT_HANDLER(configFilename) {}
+    protected:
+    void _MQTTThread() override
+    {
+//        std::cerr << "Starting MQTT thread.." << std::endl;
+        while (_isRunning)
+        {
+            try
+            {
+                if (!_client->is_connected())
+                {
+                    std::cerr << "Lost connection to the MQTT server. Reconnecting..." << std::endl;
+                    _client->reconnect()->wait();
+                    std::cerr << "Reconnected!" << std::endl;
+                }
+
+                // Decompose Message!
+                std::this_thread::sleep_for(std::chrono::seconds(1));
+            }
+            catch (const mqtt::exception& exc)
+            {
+                std::cerr << "Error: " << exc.what() << std::endl;
+            }
+        }
+    }
+    //std::cerr << "MQTT thread stopped.." << std::endl;
+};
+
 class CAMERA_HANDLER
 {
     public:
