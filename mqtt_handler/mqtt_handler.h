@@ -8,29 +8,14 @@
 
 class mqtt_callback : public virtual mqtt::callback
 {
-    void connected(const std::string& cause) override
-    {
-        std::cout << "\nConnected: " << cause << std::endl;
-    }
-
-    void connection_lost(const std::string& cause) override
-    {
-        std::cout << "\nConnection lost: " << cause << std::endl;
-    }
-
-    void message_arrived(mqtt::const_message_ptr msg) override
-    {
-        std::cout << "\nMessage arrived:\n"
-                  << "Topic: " << msg->get_topic() << "\n"
-                  << "Payload: " << msg->to_string() << std::endl;
-    }
-
-    void delivery_complete(mqtt::delivery_token_ptr token) override {
-        std::cout << "\nDelivery complete for token: " << (token ? token->get_message_id() : -1) << std::endl;
-    }
+    protected:
+        void connected(const std::string& cause) override = 0;
+        void connection_lost(const std::string& cause) override = 0;
+        void message_arrived(mqtt::const_message_ptr msg) override = 0;
+        void delivery_complete(mqtt::delivery_token_ptr token) override = 0;
 };
 
-class MQTT_HANDLER
+class MQTT_HANDLER : protected mqtt_callback
 {
     public:
         MQTT_HANDLER(const std::string filename);
@@ -41,6 +26,25 @@ class MQTT_HANDLER
         ~MQTT_HANDLER();
     protected:
         virtual void _MQTTThread() = 0;
+
+        void connected(const std::string& cause) override
+        {
+
+        }
+        void connection_lost(const std::string& cause) override
+        {
+
+        }
+
+        void message_arrived(mqtt::const_message_ptr msg) override
+        {
+        }
+
+        void delivery_complete(mqtt::delivery_token_ptr token) override
+        {
+
+        }
+
         bool _isRunning = false;
         mqtt::async_client* _client;
 
@@ -48,7 +52,6 @@ class MQTT_HANDLER
         CONFIG_HANDLER _mqttConfig;
 
         mqtt::connect_options _connOpts;
-        mqtt_callback _callBack;
 
         std::string _clientID;
         std::string _serverAddress;

@@ -5,13 +5,15 @@
 #include <signal.h>
 #include <unistd.h>
 
-CAMERA_HANDLER::CAMERA_HANDLER(std::string outputFilepath) : cameraConfig("config/config.json")
+CAMERA_HANDLER::CAMERA_HANDLER(std::string outputFilepath) : cameraConfig("config/config.json"), mqttHandler("config/config.json")
 {
     _outputFilepath = outputFilepath;
+    mqttHandler.Initialize();
 }
 
 bool CAMERA_HANDLER::Initialize()
 {
+    mqttHandler.Start();
     return true;
 }
 

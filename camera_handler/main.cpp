@@ -2,10 +2,22 @@
 #include <unistd.h>
 #include <cstring>
 
-#include "mqtt_handler.h"
+#include "camera_handler.h"
+
+/*
+typedef enum
+{
+    DISABLED,
+    DOG_MODE,
+    SURVEILLENCE
+}SURVEILLENCE_MODES;
+*/
+
+CAMERA_HANDLER cameraHandler("./");
 
 int main(int argc, char* argv[])
 {
+    cameraHandler.Initialize();
     while(1)
     {
 

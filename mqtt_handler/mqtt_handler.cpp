@@ -9,7 +9,10 @@ MQTT_HANDLER::MQTT_HANDLER(const std::string filename):
 MQTT_HANDLER::~MQTT_HANDLER()
 {
     Stop();
-    delete _client;
+    if(_client)
+    {
+        delete _client;
+    }
 }
 
 bool MQTT_HANDLER::Initialize()
@@ -20,7 +23,7 @@ bool MQTT_HANDLER::Initialize()
                                           _mqttConfig.GetAddress(),
                                           _mqttConfig.GetClientID()
                                          );
-        _client->set_callback(_callBack);
+        _client->set_callback(*this);
     }
     catch (const mqtt::exception& exc)
     {

@@ -158,13 +158,13 @@ CONFIG_HANDLER::CONFIG_HANDLER(const std::string filename)
             std::cerr << "\"image_cycle_limit\" is missing or is not an int!" << std::endl;
         }
 
-        if(camera.HasMember("outputfilename") && camera["outputfilename"].IsString())
+        if(camera.HasMember("output_filename") && camera["output_filename"].IsString())
         {
-            _outputFilename = camera["outputfilename"].GetString();
+            _outputFilename = camera["output_filename"].GetString();
         }
         else
         {
-            std::cerr << "\"outputfilename\" is missing or is not a string!" << std::endl;
+            std::cerr << "\"output_filename\" is missing or is not a string!" << std::endl;
         }
       }
 }

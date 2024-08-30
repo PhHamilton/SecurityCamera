@@ -86,8 +86,13 @@ void SOCKET_HANDLER::_socketThread()
             {
                 if(document.HasMember("angle") && document["angle"].IsInt())
                 {
-                    std::cout << "angle: " << document["angle"].GetInt() << std::endl;
-                    _mqttHandler.PublishMessage("servo/angle", std::to_string(document["angle"].GetInt()));
+                    std::cout << "/angle: " << document["angle"].GetInt() << std::endl;
+                    _mqttHandler.PublishMessage("udp_handler/angle", std::to_string(document["angle"].GetInt()));
+                }
+                if(document.HasMember("surveillence") && document["surveillence"].IsBool())
+                {
+                    std::cout << "surveillence: " << document["surveillence"].GetBool() << std::endl;
+                    _mqttHandler.PublishMessage("udp_handler/surveillence", std::to_string(document["surveillence"].GetBool()));
                 }
             }
         }

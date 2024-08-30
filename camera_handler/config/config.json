@@ -3,8 +3,8 @@
     {
         "client_id": "camera_handler",
         "address": "tcp://localhost:1883",
-        "subscription_topics": [],
-        "publish_topic": "udp_handler/udp_message",
+        "subscription_topics": ["udp_handler/surveillence"],
+        "publish_topic": "",
         "QOS": 2,
         "keep_alive": 60
     },
