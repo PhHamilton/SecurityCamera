@@ -13,7 +13,8 @@ typedef enum
 }SURVEILLENCE_MODES;
 */
 
-CAMERA_HANDLER cameraHandler("./");
+const std::string outputFilePath = "./";
+CAMERA_HANDLER cameraHandler("outputFilePath");
 
 int main(int argc, char* argv[])
 {
