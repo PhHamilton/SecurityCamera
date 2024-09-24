@@ -1,0 +1,12 @@
+{
+    "MQTT":
+    {
+        "client_id": "camera_handler",
+        "address": "localhost",
+        "port": 1883,
+        "subscription_topics": "test/",
+        "publish_topic": "camera_handler/test",
+        "QOS": 2,
+        "keep_alive": 60
+    }
+}
