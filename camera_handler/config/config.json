@@ -20,7 +20,7 @@
             "height": 1080
         },
         "frame_rate": 1,
-        "output_path": "./",
+        "output_path": "./surveillence_images/",
         "n_stored_images": 10
     }
 }
