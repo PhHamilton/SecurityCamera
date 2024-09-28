@@ -1,6 +1,7 @@
 from camera import Camera
 from mqtt_handler import MQTTHandler
-from ImageParser import ImageParser
+from image_parser import ImageParser
+from config_handler import ConfigHandler
 from enum import Enum
 import json
 import threading
@@ -11,18 +12,25 @@ class CameraModes(Enum):
     SURVEILLENCE = 2
 
 class CameraHandler(MQTTHandler):
-    def __init__(self, configFilePath, flip=False, fileType=".jpg", imageName="img_"):
+    def __init__(self, configFilePath):
         super().__init__(configFilePath)
-        self.camera = Camera(flip, fileType, imageName)
+        self.cameraConfig = ConfigHandler(configFilePath)
+        self.camera = Camera(self.cameraConfig)
         self.imageParser = ImageParser()
         self.mode = CameraModes.DISABLED.value
         self.camera_lock = threading.Lock()  # Thread lock to prevent race conditions
+        self.imageCounter = 1;
 
     def GetImage(self):
         with self.camera_lock:
             frame = self.camera.GetFrame()
             img = self.imageParser.AddTimestamp(frame)
             img = self.imageParser.AddCPUTemp(img)
+            if self.mode == CameraModes.DOG_MODE and self.imageCounter <= self.cameraConfig.GetNStoredImages():
+                paddingLength = len(str(self.nStoredImages))
+                fileName = f"{self.cameraConfig.GetFileName()}{str(self.imageCounter).zfill(paddingLength).self.cameraConfig.GetFileType()}"
+                img.save(self.cameraConfig.GetOutputPath() + fileName);
+                self.imageCounter += 1
             return img
 
     def GetOfflineImage(self):

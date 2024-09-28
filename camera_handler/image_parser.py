@@ -5,9 +5,8 @@ class ImageParser(object):
     def __init__(self):
         self.padding_x = 10
         self.padding_y = self.padding_x
-        self.font_size = 20  # Set the desired font size
+        self.font_size = 30
 
-        # Load a font. You can use a path to a custom .ttf file if needed.
         try:
             self.font = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf", self.font_size)
         except IOError:

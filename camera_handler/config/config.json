@@ -8,5 +8,19 @@
         "publish_topic": "camera_handler/",
         "QOS": 2,
         "keep_alive": 60
+    },
+    "camera_parameters":
+    {
+        "flip_image": false,
+        "file_type": "jpg",
+        "image_name": "img_",
+        "resolution":
+        {
+            "width": 1024,
+            "height": 720
+        },
+        "frame_rate": 1,
+        "output_path": "./",
+        "n_stored_images": 10
     }
 }

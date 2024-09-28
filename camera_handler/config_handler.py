@@ -11,6 +11,14 @@ class ConfigHandler(object):
         self.publishTopic = None;
         self.QOS = None;
         self.keepAlive = None;
+        self.flipImage = None;
+        self.fileType = None;
+        self.imageName = None;
+        self.resolution = None;
+        self.imageWidth = None;
+        self.imageHeight = None;
+        self.frameRate = None;
+        self.outputPath = None;
 
         self.ReadConfig()
 
@@ -27,13 +35,23 @@ class ConfigHandler(object):
             print(f"Error: The file {self.filePath} contains invalid JSON.")
             return None
 
-        self.clientID = self.GetConfigValue("client_id")
-        self.address = self.GetConfigValue("address")
-        self.port = self.GetConfigValue("port")
-        self.subscriptionTopics = self.GetConfigValue("subscription_topics")
-        self.publishTopic = self.GetConfigValue("publish_topic")
-        self.QOS = self.GetConfigValue("QOS")
-        self.keepAlive = self.GetConfigValue("keep_alive")
+        self.clientID = self.GetConfigValue("MQTT", "client_id")
+        self.address = self.GetConfigValue("MQTT", "address")
+        self.port = self.GetConfigValue("MQTT", "port")
+        self.subscriptionTopics = self.GetConfigValue("MQTT", "subscription_topics")
+        self.publishTopic = self.GetConfigValue("MQTT", "publish_topic")
+        self.QOS = self.GetConfigValue("MQTT", "QOS")
+        self.keepAlive = self.GetConfigValue("MQTT", "keep_alive")
+
+        self.flipImage = self.GetConfigValue("camera_parameters", "flip_image")
+        self.fileType = self.GetConfigValue("camera_parameters", "file_type")
+        self.imageName = self.GetConfigValue("camera_parameters", "image_name")
+        self.width = self.GetConfigValue("camera_parameters", "width", "resolution")
+        self.height = self.GetConfigValue("camera_parameters", "height", "resolution")
+        self.frameRate = self.GetConfigValue("camera_parameters", "frame_rate")
+        self.outputPath = self.GetConfigValue("camera_parameters", "output_path")
+        self.nStoredImages = self.GetConfigValue("camera_parameters", "n_stored_images")
+
 
     def GetClientID(self):
         return self.clientID;
@@ -56,10 +74,33 @@ class ConfigHandler(object):
     def GetKeepAlive(self):
         return self.keepAlive;
 
-    def GetConfigValue(self, key):
+    def GetImageFlip(self):
+        return self.flipImage;
+
+    def GetFileType(self):
+        return self.fileType;
+
+    def GetImageName(self):
+        return self.imageName;
+
+    def GetResolution(self):
+        return (self.width, self.height);
+
+    def GetFrameRate(self):
+        return self.frameRate;
+
+    def GetOutputPath(self):
+        return self.outputPath;
+
+    def GetNStoredImages(self):
+        return self.nStoredImages;
+
+    def GetConfigValue(self, dictionary, key, subdict = None):
         if self.configFile is not None:
-            mqttConfig = self.configFile.get("MQTT", {})
-            value = mqttConfig.get(key);
+            configData = self.configFile.get(dictionary, {})
+            if subdict is not None:
+                configData = configData.get(subdict, {})
+            value = configData.get(key);
             if value is None:
                 print(f"Error: {key} is missing from the configuration file")
             else:
