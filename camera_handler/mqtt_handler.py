@@ -16,15 +16,19 @@ class MQTTHandler(object):
                             self.config.GetPort(),
                             self.config.GetKeepAlive()
                            )
+
+        #self.client.loop_forever();
         self.client.loop_start()
         while(self.IsRunning):
             pass
-
         self.client.loop_stop()
         self.client.disconnect();
 
     def StopMQTT(self):
         self.IsRunning = False
+
+    def PublishMessage(self, topic, payload):
+        self.client.publish(topic, payload)
 
     def OnConnect(self, client, userdata, flags, rc):
         if rc == 0:

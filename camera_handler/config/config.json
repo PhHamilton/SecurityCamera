@@ -5,7 +5,7 @@
         "address": "localhost",
         "port": 1883,
         "subscription_topics": "test/",
-        "publish_topic": "camera_handler/test",
+        "publish_topic": "camera_handler/",
         "QOS": 2,
         "keep_alive": 60
     }

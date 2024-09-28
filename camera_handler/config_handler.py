@@ -27,7 +27,7 @@ class ConfigHandler(object):
             print(f"Error: The file {self.filePath} contains invalid JSON.")
             return None
 
-        self.clientID = self.GetConfigValue("client_ID")
+        self.clientID = self.GetConfigValue("client_id")
         self.address = self.GetConfigValue("address")
         self.port = self.GetConfigValue("port")
         self.subscriptionTopics = self.GetConfigValue("subscription_topics")
@@ -61,7 +61,7 @@ class ConfigHandler(object):
             mqttConfig = self.configFile.get("MQTT", {})
             value = mqttConfig.get(key);
             if value is None:
-                print(f"Error: {value} is missing from the configuration file")
+                print(f"Error: {key} is missing from the configuration file")
             else:
                 print(f"{key}: {value} added!")
                 return value
