@@ -26,9 +26,10 @@ class CameraHandler(MQTTHandler):
             frame = self.camera.GetFrame()
             img = self.imageParser.AddTimestamp(frame)
             img = self.imageParser.AddCPUTemp(img)
-            if self.mode == CameraModes.DOG_MODE and self.imageCounter <= self.cameraConfig.GetNStoredImages():
-                paddingLength = len(str(self.nStoredImages))
-                fileName = f"{self.cameraConfig.GetFileName()}{str(self.imageCounter).zfill(paddingLength).self.cameraConfig.GetFileType()}"
+            n_storedImages = self.cameraConfig.GetNStoredImages()
+            if self.mode == CameraModes.SURVEILLENCE and self.imageCounter <= n_storedImages:
+                paddingLength = len(str(n_storedImages))
+                fileName = f"{self.cameraConfig.GetImageName()}{str(self.imageCounter).zfill(paddingLength)}.{self.cameraConfig.GetFileType()}"
                 img.save(self.cameraConfig.GetOutputPath() + fileName);
                 self.imageCounter += 1
             return img
