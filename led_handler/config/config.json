@@ -1,0 +1,15 @@
+{
+    "MQTT":
+    {
+        "client_id": "led_handler",
+        "address": "tcp://localhost:1883",
+        "subscription_topics": "socket_handler/data",
+        "publish_topic": "led_handler/",
+        "QOS": 2,
+        "keep_alive": 60
+    },
+    "LED":
+    {
+        "blink_frequency": 1
+    }
+}
