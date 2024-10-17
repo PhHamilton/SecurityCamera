@@ -5,14 +5,26 @@
 #include "config_handler.h"
 #include "gpio.h"
 
+typedef enum
+{
+    DISABLED,
+    DOG_MODE,
+    SURVEILLENCE
+}SURVEILLENCE_MODES;
+
 class LED_HANDLER : MQTT_HANDLER
 {
     public:
         LED_HANDLER(const char* pinNumber);
         bool Initialize();
+        void StartThread();
+        void StopThread();
     private:
         CONFIG_HANDLER _ledConfig;
         GPIO _led;
+        SURVEILLENCE_MODES _surveillenceMode = DOG_MODE;
+        void _ledThread();
+        bool _isRunning = false;
 
         void _MQTTThread() override;
         void message_arrived(mqtt::const_message_ptr msg) override;
