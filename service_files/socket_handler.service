@@ -1,0 +1,12 @@
+[Unit]
+Description=socket_handler
+
+[Service]
+Type=simple
+ExecStart=/home/ares/SecurityCamera/led_handler/socket_handler
+WorkingDirectory=/home/ares/SecurityCamera/socket_handler
+Restart=on-failure
+User=ares
+
+[Install]
+WantedBy=multi-user.target

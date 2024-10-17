@@ -1,0 +1,14 @@
+[Unit]
+Description=camera_handler
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/python3 /home/ares/SecurityCamera/camera_handler/app.py
+WorkingDirectory=/home/ares/SecurityCamera/camera_handler
+Restart=on-failure
+User=ares
+Environment="PYTHONUNBUFFERED=1"
+
+[Install]
+WantedBy=multi-user.target
