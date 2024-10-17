@@ -19,7 +19,8 @@ class CONFIG_HANDLER
         int GetFramereate() {return _frameRate;}
         int GetImageCycleLimit() {return _imageCycleLimit;}
         bool GetVerticalFlip() {return _verticalFlip;}
-        std::string GetOutputFilename() {return _outputFilename;};
+        std::string GetOutputFilename() {return _outputFilename;}
+        int GetBlinkFrequency() {return _blinkFrequency;}
    private:
         const std::string _filename;
 
@@ -37,5 +38,6 @@ class CONFIG_HANDLER
         int _imageCycleLimit;
         bool _verticalFlip;
         std::string _outputFilename;
+        int _blinkFrequency;
 };
 #endif //CONFIG_HANDLER_H

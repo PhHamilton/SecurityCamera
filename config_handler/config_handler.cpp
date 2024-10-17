@@ -167,4 +167,13 @@ CONFIG_HANDLER::CONFIG_HANDLER(const std::string filename)
             std::cerr << "\"output_filename\" is missing or is not a string!" << std::endl;
         }
       }
+    if(doc.HasMember("LED") && doc["LED"].IsObject())
+    {
+        const rapidjson::Value& led  = doc["LED"];
+
+        if(led.HasMember("blink_frequency") && led["blink_frequency"].IsInt())
+        {
+            _blinkFrequency = led["blink_frequency"].GetInt();
+        }
+    }
 }
